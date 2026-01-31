@@ -1,0 +1,22 @@
+CREATE OR REPLACE VIEW v_model_ready_data AS
+SELECT 
+    full_name,
+    age,
+    annual_income,
+    mobile_tenure_months,
+    
+        CASE 
+        WHEN utility_payment_status = 'Paid_On_Time' THEN 1.0
+        WHEN utility_payment_status = 'Late' THEN 0.5
+        ELSE 0.0
+    END AS utility_score,
+
+    CAST(mobile_tenure_months AS FLOAT) / 120.0 AS tenure_index,
+
+    is_defaulted
+
+FROM raw_alt_credit_data;
+
+
+SELECT * FROM v_model_ready_data;
+
